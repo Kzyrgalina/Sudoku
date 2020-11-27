@@ -13,7 +13,7 @@ public class Controller {
     private View view;
     private Model model;
     private Cell selectedCell = null;
-    private SolveState state;
+    private boolean wasSelected = false;
 
 
     public Controller(final View view, final Model model) {
@@ -23,17 +23,19 @@ public class Controller {
         restart();
 
         view.listenField(e -> {
-            if (model.getState() == ENTER_THE_DATA) {
+            if (model.getState() == ENTER_THE_DATA && !wasSelected) {
                 Cell cell = (Cell) e.getSource();
                 model.setSelectedCell(cell.getLocate());
                 if (selectedCell != null) selectedCell.setState(EMPTY);
                 selectedCell = cell;
                 selectedCell.setState(SELECTED);
+                wasSelected = true;
             }
         });
 
         view.listenKeyboard(e -> {
-            if (model.getState() == ENTER_THE_DATA) {
+            if (model.getState() == ENTER_THE_DATA && wasSelected) {
+                wasSelected = false;
                 String str = ((JButton) e.getSource()).getText();
                 model.setChar(str.charAt(0));
                 if (selectedCell != null) {
