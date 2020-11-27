@@ -53,10 +53,14 @@ public class Controller {
             }
         });
 
-        view.listenClear(e -> restart());
+        view.listenClear(e -> {
+            restart();
+            wasSelected = false;
+        });
 
         view.listenCancel(e -> {
             if (model.getState() == ENTER_THE_DATA) {
+                wasSelected = false;
                 String str = ((JButton) e.getSource()).getText();
                 model.setChar('\u0000');
                 if (selectedCell != null) {
