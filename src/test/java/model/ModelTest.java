@@ -2,9 +2,24 @@ package model;
 
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ModelTest {
+
+    private final int[][] emptyInput = new int[][]{
+            {0, 0, 0,   0, 0, 0,    0, 0, 0},
+            {0, 0, 0,   0, 0, 0,    0, 0, 0},
+            {0, 0, 0,   0, 0, 0,    0, 0, 0},
+
+            {0, 0, 0,   0, 0, 0,    0, 0, 0},
+            {0, 0, 0,   0, 0, 0,    0, 0, 0},
+            {0, 0, 0,   0, 0, 0,    0, 0, 0},
+
+            {0, 0, 0,   0, 0, 0,    0, 0, 0},
+            {0, 0, 0,   0, 0, 0,    0, 0, 0},
+            {0, 0, 0,   0, 0, 0,    0, 0, 0}};
 
     private final int[][] input = new int[][]{
             {0, 0, 0,   3, 0, 2,    0, 0, 8},
@@ -61,5 +76,23 @@ class ModelTest {
         model.start();
         model.setField(wrongInput);
         assertFalse(model.checkData(wrongInput));   //некорректные данные
+    }
+
+    @Test
+    void restart(){
+        model.setField(input);
+        assertEquals(SolveState.HAVE_ANSWER, model.solve());
+        model.start(); //рестарт решателя
+        assertArrayEquals(emptyInput, model.getField()); //поле пустое
+    }
+
+    @Test
+    void setDigit(){
+        model.start();
+        model.setField(input);
+        Point point = new Point(0, 0); //добавим еще одно число
+        assertTrue(model.setSelectedCell(point));
+        model.setChar('1');
+        assertEquals(1, model.getField()[0][0]); //число установлено верно
     }
 }

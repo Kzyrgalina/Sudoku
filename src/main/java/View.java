@@ -18,6 +18,11 @@ public class View {
     JLabel message;
     boolean myBluePosition = false;
 
+    //часто используемые размеры кнопок, координаты задаются вручную
+    int cellSize = 41;
+    int btnWidth = 120;
+    int cellYLocation = 70;
+
     public View() {
         frame = new JFrame();
         frame.setSize(590, 590);
@@ -33,7 +38,7 @@ public class View {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[0].length; j++) {
                 field[i][j] = new Cell(i, j);
-                field[i][j].setBounds(85 + 41*i, 70 + 41*j, 41, 41);
+                field[i][j].setBounds(85 + cellSize*i, cellYLocation + cellSize *j, cellSize, cellSize);
                 frame.add(field[i][j]);
             }
         }
@@ -42,26 +47,26 @@ public class View {
 
         for (int i = 0; i < keyboard.length; i++) {
             keyboard[i] = new JButton("" + (i + 1));
-            keyboard[i].setBounds(470, 70 + 41*i, 41, 41);
+            keyboard[i].setBounds(470, cellYLocation + cellSize*i, cellSize, cellSize);
             keyboard[i].setBackground(myBlue);
             keyboard[i].setFont(font);
             frame.add(keyboard[i]);
         }
 
         btnCancel = new JButton("Cancel");
-        btnCancel.setBounds(210, 455, 120, 41);
+        btnCancel.setBounds(210, 455, btnWidth, cellSize);
         btnCancel.setFont(btnFont);
         btnCancel.setBackground(myBlue);
         frame.add(btnCancel);
 
         btnSolve = new JButton("Solve");
-        btnSolve.setBounds(333, 455, 120, 41);
+        btnSolve.setBounds(333, 455, btnWidth, cellSize);
         btnSolve.setFont(btnFont);
         btnSolve.setBackground(myBlue);
         frame.add(btnSolve);
 
         btnClear = new JButton("Clear");
-        btnClear.setBounds(85, 455, 120, 41);
+        btnClear.setBounds(85, 455, btnWidth, cellSize);
         btnClear.setFont(btnFont);
         btnClear.setBackground(myBlue);
         frame.add(btnClear);
@@ -114,6 +119,8 @@ public class View {
     }
 
     public boolean color(int i, int j){
+        // Делаем голубыми квадраты 3x3 через одного в шахматном порядке
+        // Например, квадрат с координатами 0..2 по Х и 0..2 по Y и т.д.
         return myBluePosition = (i < 3 || i > 5) && ((j < 3) || (j > 5)) ||
                 ((i > 2 && i < 6) && (j > 2 && j < 6));
     }
